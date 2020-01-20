@@ -1,4 +1,6 @@
+using System.Net.Mime;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Video;
 
 // NOTE: Comment out BindService method in YoloServiceGrpc.cs, lines 91-94
@@ -44,6 +46,7 @@ namespace Yolo
         void Update()
         {
           var camera = Camera.main;
+          var image = FindObjectOfType<Image>();
             clientManager.Update(camera, _size);
         }
 
