@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Video;
 
 // NOTE: Comment out BindService method in YoloServiceGrpc.cs, lines 91-94
 
@@ -15,13 +16,14 @@ namespace Yolo
         Texture2D texture;
         Monitor monitor;
         Cam cam;
+        private Vector2Int _size;
 
         public void Initialize()
         {
             sizeConfig = GetComponent<SizeConfig>();
             sizeConfig.RaiseResizeEvent += OnScreenResize;
             Size size = sizeConfig.Initialize();
-
+            _size = size.Image;
             texture = new Texture2D(size.Image.x, size.Image.y, TextureFormat.RGB24, false);
             cam = GameObject.FindObjectOfType<Cam>();
             cam.Initialize(ref texture, size);
@@ -29,7 +31,8 @@ namespace Yolo
             monitor = GameObject.FindObjectOfType<Monitor>();
             monitor.Initialize(size, LabelColors.CreateFromJSON(Resources.Load<TextAsset>("LabelColors").text));
 
-            clientManager = new ClientManager(ref texture);
+            var hiResScreenShots = new HiResScreenShots();
+            clientManager = new ClientManager(hiResScreenShots);
             clientManager.RaiseDetectionEvent += OnDetection;
         }
 
@@ -40,7 +43,8 @@ namespace Yolo
 
         void Update()
         {
-            clientManager.Update();
+          var camera = Camera.main;
+            clientManager.Update(camera, _size);
         }
 
         void OnDetection(object sender, DetectionEventArgs e)
@@ -50,6 +54,7 @@ namespace Yolo
 
         void OnScreenResize(object sender, ResizeEventArgs e)
         {
+          _size = e.Size.Image;
             texture.Resize(e.Size.Image.x, e.Size.Image.y);
             monitor.SetSize(e.Size);
             cam.SetSize(e.Size);

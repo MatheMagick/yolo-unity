@@ -7,24 +7,24 @@ namespace Yolo
 {
     public class ClientManager : IDisposable
     {
-        public event EventHandler<DetectionEventArgs> RaiseDetectionEvent;
+      private readonly HiResScreenShots screenShotService;
+      public event EventHandler<DetectionEventArgs> RaiseDetectionEvent;
         DetectionEventArgs detectionEventArgs; // re-use
 
         Channel channel;
         ClientWrapper client;
-        Texture2D texture;
         YoloResult result; // re-use, reference
 
         Stopwatch timer;
-        const int minInterval = 0; // throttle requests
-        bool requestEnabled => timer.Elapsed.Milliseconds >= minInterval;
+        const int minInterval = 1000; // throttle requests
+        bool requestEnabled => timer.ElapsedMilliseconds >= minInterval;
 
-        public ClientManager(ref Texture2D texture)
+        public ClientManager(HiResScreenShots screenShotService)
         {
-            channel = new Channel("127.0.0.1:50052", ChannelCredentials.Insecure);
+          this.screenShotService = screenShotService;
+          channel = new Channel("127.0.0.1:50052", ChannelCredentials.Insecure);
             client = new ClientWrapper(new YoloService.YoloServiceClient(channel));
 
-            this.texture = texture;
             result = new YoloResult();
             detectionEventArgs = new DetectionEventArgs(result);
 
@@ -37,7 +37,7 @@ namespace Yolo
             channel.ShutdownAsync();
         }
 
-        public void Update()
+        public void Update(Camera camera, Vector2Int size)
         {
             if (client.IsIdle)
             {
@@ -45,7 +45,10 @@ namespace Yolo
                 {
                     timer.Restart();
                     result.Clear();
-                    client.Detect(ImageConversion.EncodeToPNG(texture), result);
+                    var image = screenShotService.GetScreenShot(camera, size);
+                    client.Detect(image, result);
+                    // TODO Modification
+                    //client.Detect(ImageConversion.EncodeToPNG(texture), result);
                 }
             }
             else if (client.HasNewResponse)

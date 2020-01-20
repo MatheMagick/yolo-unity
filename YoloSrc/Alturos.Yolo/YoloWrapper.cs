@@ -90,10 +90,10 @@ namespace Alturos.Yolo
             }
 
             this.EnvironmentReport = this.GetEnvironmentReport();
-            if (!this.EnvironmentReport.MicrosoftVisualCPlusPlus2017RedistributableExists)
-            {
-                throw new DllNotFoundException("Microsoft Visual C++ 2017 Redistributable (x64)");
-            }
+            //if (!this.EnvironmentReport.MicrosoftVisualCPlusPlus2017RedistributableExists)
+            //{
+            //    throw new DllNotFoundException("Microsoft Visual C++ 2017 Redistributable (x64)");
+            //}
 
             this.DetectionSystem = DetectionSystem.CPU;
             if (!ignoreGpu && this.EnvironmentReport.CudaExists && this.EnvironmentReport.CudnnExists)
