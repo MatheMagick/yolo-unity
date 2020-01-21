@@ -32,10 +32,10 @@ public class HiResScreenShots {
       //Destroy(rt);
       byte[] bytes = screenShot.EncodeToPNG();
 
-      
       string filename = ScreenShotName(resWidth, resHeight);
-      Directory.CreateDirectory(Path.GetDirectoryName(filename));
-      System.IO.File.WriteAllBytes(filename, bytes);
+      //Directory.CreateDirectory(Path.GetDirectoryName(filename));
+      //System.IO.File.WriteAllBytes(filename, bytes);
+
       Debug.Log(string.Format("Took screenshot to: {0}", filename));
 
       return bytes;

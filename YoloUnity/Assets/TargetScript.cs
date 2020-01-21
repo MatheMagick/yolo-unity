@@ -10,7 +10,7 @@ public class TargetScript : MonoBehaviour
         
     }
 
-    private const float _speed = 0.1f;
+    private const float _speed = 0.01f;
 
     // Update is called once per frame
     void Update()

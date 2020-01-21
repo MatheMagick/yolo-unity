@@ -30,6 +30,10 @@ namespace Yolo
 
         public Color GetColor(string descr)
         {
+          if (descr.StartsWith("sport"))
+          {
+            return Color.red;
+          }
             if (!dict.ContainsKey(descr))
             {
                 Debug.LogWarning("Unknown object type: " + descr);

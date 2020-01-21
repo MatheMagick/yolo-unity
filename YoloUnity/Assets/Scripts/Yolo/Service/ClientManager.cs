@@ -2,6 +2,7 @@ using UnityEngine;
 using Grpc.Core;
 using System;
 using System.Diagnostics;
+using UnityEngine.UI;
 
 namespace Yolo
 {
@@ -16,7 +17,7 @@ namespace Yolo
         YoloResult result; // re-use, reference
 
         Stopwatch timer;
-        const int minInterval = 1000; // throttle requests
+        const int minInterval = 200; // throttle requests
         bool requestEnabled => timer.ElapsedMilliseconds >= minInterval;
 
         public ClientManager(HiResScreenShots screenShotService)
@@ -47,6 +48,7 @@ namespace Yolo
                     result.Clear();
                     var image = screenShotService.GetScreenShot(camera, size);
                     client.Detect(image, result);
+                    
                     // TODO Modification
                     //client.Detect(ImageConversion.EncodeToPNG(texture), result);
                 }

@@ -21,5 +21,9 @@ public class scr : MonoBehaviour
       var distance = _otherSphere.transform.position - transform.position;
 
       transform.Translate(distance * 0.005f);
+
+      //var targetRotation = Quaternion.LookRotation (distance);
+      //var str = Mathf.Min (1 * Time.deltaTime, 1);
+      //transform.rotation = Quaternion.Lerp (transform.rotation, targetRotation, str);
     }
 }

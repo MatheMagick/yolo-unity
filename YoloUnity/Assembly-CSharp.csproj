@@ -63,6 +63,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\MainCameraScript.cs" />
+    <Compile Include="Assets\scr.cs" />
     <Compile Include="Assets\Scripts\Yolo\Cam.cs" />
     <Compile Include="Assets\Scripts\Yolo\Label.cs" />
     <Compile Include="Assets\Scripts\Yolo\LabelColors.cs" />
@@ -77,6 +79,7 @@
     <Compile Include="Assets\Scripts\Yolo\Service\YoloServiceGrpc.cs" />
     <Compile Include="Assets\Scripts\Yolo\SizeConfig.cs" />
     <Compile Include="Assets\TargetScript.cs" />
+    <None Include="Assets\Missile\Doc\ReadMe.txt" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>D:/Work/Open Source/yolo-unity/YoloUnity/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>

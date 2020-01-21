@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Net.Mime;
 using UnityEngine;
 using UnityEngine.UI;
@@ -46,7 +47,9 @@ namespace Yolo
         void Update()
         {
           var camera = Camera.main;
-          var image = FindObjectOfType<Image>();
+      //var _otherSphere = FindObjectsOfType<GameObject>().First(x => x.tag == "imageControl");
+      //var typeoft = _otherSphere.GetType();
+      //    var image = FindObjectsOfType<Image>();
             clientManager.Update(camera, _size);
         }
 
