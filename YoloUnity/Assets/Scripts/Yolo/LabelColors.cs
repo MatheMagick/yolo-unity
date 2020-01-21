@@ -30,7 +30,7 @@ namespace Yolo
 
         public Color GetColor(string descr)
         {
-          if (descr.StartsWith("sport"))
+          if (descr.StartsWith("aero"))
           {
             return Color.red;
           }
