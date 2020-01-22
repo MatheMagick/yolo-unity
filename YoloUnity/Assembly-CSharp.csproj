@@ -63,9 +63,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\FollowTargetScript.cs" />
     <Compile Include="Assets\HelicopterRotationScript.cs" />
-    <Compile Include="Assets\MainCameraScript.cs" />
-    <Compile Include="Assets\scr.cs" />
     <Compile Include="Assets\Scripts\Yolo\Cam.cs" />
     <Compile Include="Assets\Scripts\Yolo\Label.cs" />
     <Compile Include="Assets\Scripts\Yolo\LabelColors.cs" />
@@ -79,7 +78,6 @@
     <Compile Include="Assets\Scripts\Yolo\Service\YoloService.cs" />
     <Compile Include="Assets\Scripts\Yolo\Service\YoloServiceGrpc.cs" />
     <Compile Include="Assets\Scripts\Yolo\SizeConfig.cs" />
-    <Compile Include="Assets\TargetScript.cs" />
     <None Include="Assets\Missile\Doc\ReadMe.txt" />
     <None Include="Assets\vechile_mega_pack\source\Shaders\Bump Spec Map.shader" />
     <Reference Include="Unity.TextMeshPro.Editor">

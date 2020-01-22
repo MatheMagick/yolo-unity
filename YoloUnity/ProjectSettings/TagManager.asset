@@ -4,8 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - kur
   - imageControl
+  - plane
+  - target
   layers:
   - Default
   - TransparentFX

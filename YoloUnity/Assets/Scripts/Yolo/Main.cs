@@ -20,11 +20,13 @@ namespace Yolo
         Monitor monitor;
         Cam cam;
         private Vector2Int _size;
-        private GameObject _targetPosition;
+        private GameObject _targetIndicatorObject;
+        private GameObject _plane;
 
         public void Initialize()
         {
-          _targetPosition = FindObjectsOfType<GameObject>().First(x => x.tag == "kur");
+          _targetIndicatorObject = FindObjectsOfType<GameObject>().First(x => x.tag == "target");
+          _plane = FindObjectsOfType<GameObject>().First(x => x.tag == "plane");
             sizeConfig = GetComponent<SizeConfig>();
             sizeConfig.RaiseResizeEvent += OnScreenResize;
             Size size = sizeConfig.Initialize();
@@ -49,23 +51,22 @@ namespace Yolo
         void Update()
         {
           var camera = Camera.main;
-      //var _otherSphere = FindObjectsOfType<GameObject>().First(x => x.tag == "imageControl");
-      //var typeoft = _otherSphere.GetType();
-      //    var image = FindObjectsOfType<Image>();
             clientManager.Update(camera, _size);
         }
 
         void OnDetection(object sender, DetectionEventArgs e)
         {
           var yoloItems = e.Result.ToList(confidenceThreshold);
-          var aeroplane = yoloItems.FirstOrDefault(x => x.Type.StartsWith("aero"));
-          if (aeroplane != null)
+          var yoloAeroplaneItem = yoloItems.FirstOrDefault(x => x.Type.StartsWith("aero"));
+          if (yoloAeroplaneItem != null)
           {
             var xRatio = (float) Camera.main.scaledPixelWidth / _size.x;
             var yRatio = (float) Camera.main.scaledPixelHeight / _size.y;
-            var aeroPlanePositionOnScreen = aeroplane.Rect.center;
-            var planePosition =
-              Camera.main.ScreenToWorldPoint(new Vector3(aeroPlanePositionOnScreen.x * 2 * xRatio, aeroPlanePositionOnScreen.y * yRatio, _targetPosition.transform.position.z + 4));
+            var aeroPlanePositionOnScreen = yoloAeroplaneItem.Rect.center;
+            var planePosition = Camera.main.ScreenToWorldPoint(new Vector3(aeroPlanePositionOnScreen.x * 2 * xRatio, aeroPlanePositionOnScreen.y * yRatio, _plane.transform.position.z + 4));
+
+            // Set the red target sphere to recognized plane coordinates
+            _targetIndicatorObject.transform.position = new Vector3(planePosition.x, -planePosition.y, planePosition.z - 4);
           }
 
           monitor.UpdateLabels(yoloItems);
