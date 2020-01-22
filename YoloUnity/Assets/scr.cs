@@ -11,8 +11,6 @@ public class scr : MonoBehaviour
     void Start()
     {
       _otherSphere = FindObjectsOfType<GameObject>().First(x => x.tag == "kur");
-
-      
     }
 
     // Update is called once per frame

@@ -20,9 +20,11 @@ namespace Yolo
         Monitor monitor;
         Cam cam;
         private Vector2Int _size;
+        private GameObject _targetPosition;
 
         public void Initialize()
         {
+          _targetPosition = FindObjectsOfType<GameObject>().First(x => x.tag == "kur");
             sizeConfig = GetComponent<SizeConfig>();
             sizeConfig.RaiseResizeEvent += OnScreenResize;
             Size size = sizeConfig.Initialize();
@@ -55,7 +57,18 @@ namespace Yolo
 
         void OnDetection(object sender, DetectionEventArgs e)
         {
-            monitor.UpdateLabels(e.Result.ToList(confidenceThreshold));
+          var yoloItems = e.Result.ToList(confidenceThreshold);
+          var aeroplane = yoloItems.FirstOrDefault(x => x.Type.StartsWith("aero"));
+          if (aeroplane != null)
+          {
+            var xRatio = (float) Camera.main.scaledPixelWidth / _size.x;
+            var yRatio = (float) Camera.main.scaledPixelHeight / _size.y;
+            var aeroPlanePositionOnScreen = aeroplane.Rect.center;
+            var planePosition =
+              Camera.main.ScreenToWorldPoint(new Vector3(aeroPlanePositionOnScreen.x * 2 * xRatio, aeroPlanePositionOnScreen.y * yRatio, _targetPosition.transform.position.z + 4));
+          }
+
+          monitor.UpdateLabels(yoloItems);
         }
 
         void OnScreenResize(object sender, ResizeEventArgs e)
