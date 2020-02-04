@@ -63,7 +63,7 @@ namespace Yolo
             var xRatio = (float) Camera.main.scaledPixelWidth / _size.x;
             var yRatio = (float) Camera.main.scaledPixelHeight / _size.y;
             var aeroPlanePositionOnScreen = yoloAeroplaneItem.Rect.center;
-            var planePosition = Camera.main.ScreenToWorldPoint(new Vector3(aeroPlanePositionOnScreen.x * 2 * xRatio, aeroPlanePositionOnScreen.y * yRatio, _plane.transform.position.z + 4));
+            var planePosition = Camera.main.ScreenToWorldPoint(new Vector3(aeroPlanePositionOnScreen.x * 2 * xRatio, aeroPlanePositionOnScreen.y * yRatio, yoloAeroplaneItem.Depth + 4));
 
             // Set the red target sphere to recognized plane coordinates
             _targetIndicatorObject.transform.position = new Vector3(planePosition.x, -planePosition.y, planePosition.z - 4);

@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffbf8db9047ff9c4eaa2ba6850d58c28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _followedObject: {fileID: 253652701}
+  _followedObject: {fileID: 1145957528}
   _speed: 10
 --- !u!1 &76120017
 GameObject:
@@ -352,6 +352,19 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1208849663}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &253652702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253652699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a2c85c6f5ec2a647bd939a956291b72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _plane: {fileID: 253652701}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

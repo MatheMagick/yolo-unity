@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Assets\FollowTargetScript.cs" />
     <Compile Include="Assets\HelicopterRotationScript.cs" />
+    <Compile Include="Assets\PlaneDebug.cs" />
     <Compile Include="Assets\Scripts\Yolo\Cam.cs" />
     <Compile Include="Assets\Scripts\Yolo\Label.cs" />
     <Compile Include="Assets\Scripts\Yolo\LabelColors.cs" />

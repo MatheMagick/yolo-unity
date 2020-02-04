@@ -46,7 +46,7 @@ namespace Yolo
                         DetectionResponse response = responseStream.Current;
                         foreach (DetectionResult r in response.YoloItems)
                         {
-                            result.Add(new YoloItem(r.Type, r.Confidence, r.X, r.Y, r.Width, r.Height));
+                            result.Add(new YoloItem(r.Type, r.Confidence, r.GetX(), r.GetY(), r.GetZ(), r.Width, r.Height));
                         }
                         result.ElapsedMilliseconds = response.ElapsedMilliseconds;
                         state = State.NewResponse;
@@ -59,5 +59,23 @@ namespace Yolo
                 throw;
             }
         }
+    }
+
+    internal static class YoloExtensions
+    {
+      public static int GetX(this DetectionResult result)
+      {
+        return result.X;
+      }
+      public static int GetY(this DetectionResult result)
+      {
+        return result.Y;
+      }
+      public static float GetZ(this DetectionResult result)
+      {
+        return Position;
+      }
+
+      public static float Position { get; set; }
     }
 }

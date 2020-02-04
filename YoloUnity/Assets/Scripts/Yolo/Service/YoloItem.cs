@@ -7,12 +7,14 @@ namespace Yolo
         public string Type { get; private set; }
         public float Confidence { get; private set; }
         public RectInt Rect { get; private set; }
+        public float Depth { get; set; }
 
-        public YoloItem(string type, double confidence, int x, int y, int width, int height)
+        public YoloItem(string type, double confidence, int x, int y, float depth, int width, int height)
         {
             Type = type;
             Confidence = (float)confidence;
             Rect = new RectInt(x, y, width, height);
+            Depth = depth;
         }
 
         public void Expand(RectInt rect)

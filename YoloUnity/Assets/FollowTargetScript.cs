@@ -13,7 +13,7 @@ public class FollowTargetScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      if (Time.fixedTime < 10) return;
+      if (Time.fixedTime < 1) return;
         var distance = _followedObject.position - transform.position;
 
         transform.position =  Vector3.MoveTowards(transform.position, _followedObject.transform.position, _speed * Time.deltaTime);
