@@ -38,7 +38,7 @@ namespace Yolo
                 }
                 else
                 {
-                    return Color.green;
+                    return new Color(0, 0.5f, 0);
                 }
                 //return new Color(Mathf.Max(Mathf.Min(((depth - 50) / 150) * 255, 0), 255), 0, 0);
             }
