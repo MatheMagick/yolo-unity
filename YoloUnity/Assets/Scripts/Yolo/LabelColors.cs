@@ -30,18 +30,18 @@ namespace Yolo
 
         public Color GetColor(string descr, float depth)
         {
-          if (descr.StartsWith("aero"))
-          {
-            if (depth < 100)
+            if (descr.StartsWith("aero"))
             {
-              return Color.red;
+                if (depth < 100)
+                {
+                    return Color.red;
+                }
+                else
+                {
+                    return Color.green;
+                }
+                //return new Color(Mathf.Max(Mathf.Min(((depth - 50) / 150) * 255, 0), 255), 0, 0);
             }
-            else
-            {
-              return Color.green;
-            }
-            //return new Color(Mathf.Max(Mathf.Min(((depth - 50) / 150) * 255, 0), 255), 0, 0);
-          }
             if (!dict.ContainsKey(descr))
             {
                 Debug.LogWarning("Unknown object type: " + descr);
