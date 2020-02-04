@@ -40,7 +40,7 @@ namespace Yolo
             {
                 if (i < list.Count)
                 {
-                    labels[i].OnUpdate(size, labelColors.GetColor(list[i].Type), list[i]);
+                    labels[i].OnUpdate(size, labelColors.GetColor(list[i].Type, list[i].Depth), list[i]);
                 }
                 else
                 {

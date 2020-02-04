@@ -26,7 +26,7 @@ namespace Yolo
             frameRect.offsetMax = new Vector2(
                 (r.x - (size.Image.x - r.width)) * size.Factor, -r.y * size.Factor);
 
-            text.text = item.Type + " " + Mathf.Round(item.Confidence * 100) + "%";
+            text.text = item.Depth.ToString("F0") + "m " + item.Type + " " + Mathf.Round(item.Confidence * 100) + "%";
             textRect.anchoredPosition = new Vector2(
                 (r.width * size.Factor) / 2 + textOffset.x, textOffset.y);
             textRect.sizeDelta = new Vector2(r.width * size.Factor, textHeight);
