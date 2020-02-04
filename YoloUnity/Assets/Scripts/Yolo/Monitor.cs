@@ -28,7 +28,7 @@ namespace Yolo
             rect.sizeDelta = new Vector2(Screen.width, Screen.height);
         }
 
-        public void UpdateLabels(List<YoloItem> list)
+        public void UpdateLabels(List<YoloItem> list, float warningDistance)
         {
             int diff = list.Count - labels.Count;
             if (diff > 0)
@@ -40,7 +40,7 @@ namespace Yolo
             {
                 if (i < list.Count)
                 {
-                    labels[i].OnUpdate(size, labelColors.GetColor(list[i].Type, list[i].Depth), list[i]);
+                    labels[i].OnUpdate(size, labelColors.GetColor(list[i].Type, list[i].Depth, warningDistance), list[i]);
                 }
                 else
                 {

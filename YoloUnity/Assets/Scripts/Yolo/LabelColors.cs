@@ -28,11 +28,11 @@ namespace Yolo
             }
         }
 
-        public Color GetColor(string descr, float depth)
+        public Color GetColor(string descr, float distance, float distanceThreshold)
         {
             if (descr.StartsWith("aero"))
             {
-                if (depth < 100)
+                if (distance < distanceThreshold)
                 {
                     return Color.red;
                 }

@@ -13,6 +13,7 @@ namespace Yolo
         [SerializeField]
         [Range(0f, 1f)]
         float confidenceThreshold = 0;
+        public float warningDistance = 100;
 
         ClientManager clientManager;
         SizeConfig sizeConfig;
@@ -69,7 +70,7 @@ namespace Yolo
             _targetIndicatorObject.transform.position = new Vector3(planePosition.x, -planePosition.y, planePosition.z - 4);
           }
 
-          monitor.UpdateLabels(yoloItems);
+          monitor.UpdateLabels(yoloItems, warningDistance);
         }
 
         void OnScreenResize(object sender, ResizeEventArgs e)
