@@ -4,9 +4,9 @@ namespace Yolo
 {
     public class YoloItem
     {
-        public string Type { get; private set; }
-        public float Confidence { get; private set; }
-        public RectInt Rect { get; private set; }
+        public string Type { get; }
+        public float Confidence { get; }
+        public RectInt Rect { get; }
         public float Depth { get; set; }
 
         public YoloItem(string type, double confidence, int x, int y, float depth, int width, int height)
@@ -25,9 +25,6 @@ namespace Yolo
             );
         }
 
-        public override string ToString()
-        {
-            return string.Format("YoloItem Type:{0} Conf:{1} Rect:{2}", Type, Confidence, Rect);
-        }
+        public override string ToString() => $"YoloItem Type:{Type} Conf:{Confidence} Rect:{Rect}";
     }
 }

@@ -1,10 +1,5 @@
 using System.Linq;
-using System.Net.Mime;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Video;
-
-// NOTE: Comment out BindService method in YoloServiceGrpc.cs, lines 91-94
 
 namespace Yolo
 {
@@ -51,31 +46,34 @@ namespace Yolo
 
         void Update()
         {
-          var camera = Camera.main;
+            var camera = Camera.main;
             clientManager.Update(camera, _size);
         }
 
         void OnDetection(object sender, DetectionEventArgs e)
         {
-          var yoloItems = e.Result.ToList(confidenceThreshold);
-          var yoloAeroplaneItem = yoloItems.FirstOrDefault(x => x.Type.StartsWith("aero"));
-          if (yoloAeroplaneItem != null)
-          {
-            var xRatio = (float) Camera.main.scaledPixelWidth / _size.x;
-            var yRatio = (float) Camera.main.scaledPixelHeight / _size.y;
-            var aeroPlanePositionOnScreen = yoloAeroplaneItem.Rect.center;
-            var planePosition = Camera.main.ScreenToWorldPoint(new Vector3(aeroPlanePositionOnScreen.x * 2 * xRatio, aeroPlanePositionOnScreen.y * yRatio, yoloAeroplaneItem.Depth + 4));
+            var yoloItems = e.Result.ToList(confidenceThreshold);
+            var yoloAeroplaneItem = yoloItems.FirstOrDefault(x => x.Type.StartsWith("aero"));
 
-            // Set the red target sphere to recognized plane coordinates
-            _targetIndicatorObject.transform.position = new Vector3(planePosition.x, -planePosition.y, planePosition.z - 4);
-          }
+            if (yoloAeroplaneItem != null)
+            {
+                var xRatio = (float) Camera.main.scaledPixelWidth / _size.x;
+                var yRatio = (float) Camera.main.scaledPixelHeight / _size.y;
+                var yoloPlanePositionOnScreen = yoloAeroplaneItem.Rect.center;
+                var yoloGuessedPosition = Camera.main.ScreenToWorldPoint(new Vector3(yoloPlanePositionOnScreen.x * 2 * xRatio, yoloPlanePositionOnScreen.y * yRatio, yoloAeroplaneItem.Depth + 4));
 
-          monitor.UpdateLabels(yoloItems, warningDistance);
+                // Set the red target sphere to recognized plane coordinates.
+                // Y coordinate is flipped because canvas starts at top
+                // Depth (Z) is -4 so it is displayed in front of the plane, not potentially inside it
+                _targetIndicatorObject.transform.position = new Vector3(yoloGuessedPosition.x, -yoloGuessedPosition.y, yoloGuessedPosition.z - 4);
+            }
+
+            monitor.UpdateLabels(yoloItems, warningDistance);
         }
 
         void OnScreenResize(object sender, ResizeEventArgs e)
         {
-          _size = e.Size.Image;
+            _size = e.Size.Image;
             texture.Resize(e.Size.Image.x, e.Size.Image.y);
             monitor.SetSize(e.Size);
             cam.SetSize(e.Size);

@@ -7,38 +7,35 @@ namespace Yolo
 {
     public class ClientWrapper
     {
-        public bool IsIdle => state == State.Idle;
-        public bool IsBusy => state == State.Busy;
-        public bool HasNewResponse => state == State.NewResponse;
+        private readonly YoloService.YoloServiceClient _client;
+
+        public ClientWrapper(YoloService.YoloServiceClient client) => this._client = client;
 
         enum State
         {
-            Idle,
-            Busy,
-            NewResponse
+          Idle,
+          Busy,
+          NewResponse
         }
-        State state = State.Idle;
 
-        readonly YoloService.YoloServiceClient client;
-
-        public ClientWrapper(YoloService.YoloServiceClient client)
-        {
-            this.client = client;
-        }
+        private State _state = State.Idle;
+        public bool IsIdle => _state == State.Idle;
+        public bool IsBusy => _state == State.Busy;
+        public bool HasNewResponse => _state == State.NewResponse;
 
         public void Reset()
         {
-            state = State.Idle;
+            _state = State.Idle;
         }
 
         public async Task Detect(byte[] imageData, YoloResult result)
         {
             try
             {
-                state = State.Busy;
+                _state = State.Busy;
                 DetectionRequest request = new DetectionRequest { Image = ByteString.CopyFrom(imageData) };
 
-                using (var call = client.Detect(request))
+                using (var call = _client.Detect(request))
                 {
                     var responseStream = call.ResponseStream;
                     while (await responseStream.MoveNext())
@@ -49,7 +46,7 @@ namespace Yolo
                             result.Add(new YoloItem(r.Type, r.Confidence, r.GetX(), r.GetY(), r.GetZ(), r.Width, r.Height));
                         }
                         result.ElapsedMilliseconds = response.ElapsedMilliseconds;
-                        state = State.NewResponse;
+                        _state = State.NewResponse;
                     }
                 }
             }
@@ -59,23 +56,5 @@ namespace Yolo
                 throw;
             }
         }
-    }
-
-    internal static class YoloExtensions
-    {
-      public static int GetX(this DetectionResult result)
-      {
-        return result.X;
-      }
-      public static int GetY(this DetectionResult result)
-      {
-        return result.Y;
-      }
-      public static float GetZ(this DetectionResult result)
-      {
-        return Position;
-      }
-
-      public static float Position { get; set; }
     }
 }

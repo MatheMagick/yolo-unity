@@ -1,4 +1,3 @@
-using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,7 +6,7 @@ namespace Yolo
     public class YoloResult
     {
         public int ElapsedMilliseconds;
-        public Dictionary<string, List<YoloItem>> Dict { get; private set; }
+        public Dictionary<string, List<YoloItem>> Dict { get; }
 
         public YoloResult()
         {
@@ -19,10 +18,7 @@ namespace Yolo
             return Dict.Values.SelectMany(x => x).Where(x => x.Confidence >= confidenceThreshold).ToList();
         }
 
-        public void Clear()
-        {
-            Dict.Clear();
-        }
+        public void Clear() => Dict.Clear();
 
         public void Add(YoloItem item)
         {
