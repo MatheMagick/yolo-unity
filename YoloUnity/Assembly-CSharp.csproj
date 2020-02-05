@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\Yolo\Monitor.cs" />
     <Compile Include="Assets\Scripts\Yolo\Service\ClientManager.cs" />
     <Compile Include="Assets\Scripts\Yolo\Service\ClientWrapper.cs" />
+    <Compile Include="Assets\Scripts\Yolo\Service\DetectionEventArgs.cs" />
     <Compile Include="Assets\Scripts\Yolo\Service\ScreenshotService.cs" />
     <Compile Include="Assets\Scripts\Yolo\Service\YoloItem.cs" />
     <Compile Include="Assets\Scripts\Yolo\Service\YoloResult.cs" />

@@ -2,85 +2,66 @@ using UnityEngine;
 using Grpc.Core;
 using System;
 using System.Diagnostics;
-using UnityEngine.UI;
 
 namespace Yolo
 {
     public class ClientManager : IDisposable
     {
-      private readonly HiResScreenShots screenShotService;
-      public event EventHandler<DetectionEventArgs> RaiseDetectionEvent;
-        DetectionEventArgs detectionEventArgs; // re-use
+        private readonly HiResScreenShots _screenShotService;
+        private readonly Channel _channel;
+        private readonly ClientWrapper _client;
+        private readonly YoloResult _result;
+        private readonly DetectionEventArgs _detectionArgs;
 
-        Channel channel;
-        ClientWrapper client;
-        YoloResult result; // re-use, reference
-
-        Stopwatch timer;
-        const int minInterval = 200; // throttle requests
-        bool requestEnabled => timer.ElapsedMilliseconds >= minInterval;
+        private readonly Stopwatch _timer;
+        private const int IntervalInMilliseconds = 200; // throttle requests
 
         public ClientManager(HiResScreenShots screenShotService)
         {
-          this.screenShotService = screenShotService;
-          channel = new Channel("127.0.0.1:50052", ChannelCredentials.Insecure);
-            client = new ClientWrapper(new YoloService.YoloServiceClient(channel));
+            this._screenShotService = screenShotService;
+            _channel = new Channel("127.0.0.1:50052", ChannelCredentials.Insecure);
+            _client = new ClientWrapper(new YoloService.YoloServiceClient(_channel));
 
-            result = new YoloResult();
-            detectionEventArgs = new DetectionEventArgs(result);
+            _result = new YoloResult();
+            _detectionArgs = new DetectionEventArgs(_result);
 
-            timer = new Stopwatch();
-            timer.Start();
+            _timer = new Stopwatch();
+            _timer.Start();
         }
 
-        public void Dispose()
-        {
-            channel.ShutdownAsync();
-        }
+        public void Dispose() => _channel.ShutdownAsync();
+
+        public event EventHandler<DetectionEventArgs> RaiseDetectionEvent;
 
         public void Update(Camera camera, Vector2Int size)
         {
-            if (client.IsIdle)
+            if (_client.IsIdle)
             {
-                if (requestEnabled)
+                if (_timer.ElapsedMilliseconds >= IntervalInMilliseconds)
                 {
-                    timer.Restart();
-                    result.Clear();
-                    var image = screenShotService.GetScreenShot(camera, size);
-                    client.Detect(image, result);
+                    _timer.Restart();
+                    _result.Clear();
+                    var image = _screenShotService.GetScreenShot(camera, size);
+                    _client.Detect(image, _result);
                     
                     // TODO Modification
                     //client.Detect(ImageConversion.EncodeToPNG(texture), result);
                 }
             }
-            else if (client.HasNewResponse)
+            else if (_client.HasNewResponse)
             {
                 UnityEngine.Debug.Log(string.Format("Detection time: {0}ms, Roundtrip time: {1}ms",
-                   result.ElapsedMilliseconds, timer.Elapsed.Milliseconds));
+                   _result.ElapsedMilliseconds, _timer.Elapsed.Milliseconds));
 
-                timer.Restart();
-                client.Reset();
-                OnRaiseDetectionEvent(detectionEventArgs);
+                _timer.Restart();
+                _client.Reset();
+                OnRaiseDetectionEvent(_detectionArgs);
             }
         }
 
         void OnRaiseDetectionEvent(DetectionEventArgs e)
         {
-            EventHandler<DetectionEventArgs> handler = RaiseDetectionEvent;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-        }
-    }
-
-    public class DetectionEventArgs : EventArgs
-    {
-        public YoloResult Result { get; private set; }
-
-        public DetectionEventArgs(YoloResult result)
-        {
-            Result = result;
+            RaiseDetectionEvent?.Invoke(this, e);
         }
     }
 }
