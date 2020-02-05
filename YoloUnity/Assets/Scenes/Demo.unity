@@ -246,6 +246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _followedObject: {fileID: 1145957528}
+  _secondsBeforeFollowingStarts: 1
   _speed: 10
 --- !u!1 &76120017
 GameObject:
@@ -508,6 +509,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c5f16339c993474e890bf81e01e1d4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _moveSpeed: 0.5
+  _rotationSpeed: 500
 --- !u!4 &253652701 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4749351841315700, guid: d3a94b583c03f734288546bf3abbbf7c,
